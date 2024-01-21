@@ -1,45 +1,44 @@
-import { getQuestionById} from './api.js'
-import {generateRandomNumber, generateElement } from "./utils/index.js";
+import { getQuestionById } from "./api.js";
+import { generateRandomNumber, generateElement } from "./utils/index.js";
 
 const question = document.getElementById("question");
 const questionCategory = document.getElementById("question_category");
 const buttonSubmit = document.getElementById("button_submit");
 
-document.addEventListener("DOMContentLoaded" , () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // Berikan nilai awal untuk element dengan ID 'question' dan 'question_category'
+  question.innerText = "...?";
+  questionCategory.innerText = "Tidak ada kategori";
 
-    question.innerText = "...."
-    questionCategory.innerText = ("tidak ada kategori");
+  buttonSubmit.addEventListener("click", async () => {
+    // Generate angka random dari fungsi generateRandomNumber
+    const generateNumber = generateRandomNumber(1, 20);
 
-    // generate angka random dari funsi generateRandomNumber
+    try {
+      // Call API dengan parameter id yang di generate dari fungsi generateRandomNumber
+      const response = await getQuestionById({ id: generateNumber });
 
-    buttonSubmit.addEventListener('click', async () => {
-    
-        const generateNumber = generateRandomNumber(1, 20);
+      // Jika response tidak ada, maka hentikan proses selanjutnya
+      if (!response) return;
 
-        console.log("hehe", generateNumber);
+      // Buat element span dengan class 'question-category' dan value dari response.answer
+      const span = generateElement({
+        tag: "span",
+        className: "question-category",
+        value: response.answer,
+      });
 
-        try {
-            const response = await getQuestionById({ id: generateNumber });
+      // Berikan value dari response.jokes ke element dengan ID 'question'
+      question.innerText = response.jokes || "Tunggu dulu...";
 
-            if (!response) return;
-            
-            question.innerText = response.jokes || "tunggu dulu...";
-            const span = generateElement({
-                tag : 'span',
-                className : 'question_category',
-                value: response.answer
-            });
+      // Tambahkan element span ke dalam element dengan ID 'question'
+      question.appendChild(span);
+      // Berikan value dari response.category ke element dengan ID 'question_category'
+      questionCategory.innerText = response.category || "Tidak ada kategori...";
 
-            question.appendChild(span);
-            questionCategory.innerText = response.category || "tidak ada kata"
-
-
-        console.log("{response}");
-        } catch (eror){
-            console.eror("eror nih :" , {eror});
-        }
-    });
+      // console.log({ response });
+    } catch (error) {
+      console.error("Error nich : ", { error });
+    }
+  });
 });
-
-// console.log ("HASILNYA NIH : ", getQuestionById({ id : 16 }));
-

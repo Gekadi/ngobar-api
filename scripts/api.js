@@ -10,27 +10,15 @@ const BASE_URL = "http://188.166.181.154";
 
 export async function getQuestionById({ id = 10 }) {
   try {
-    // const response = await fetch(`${BASE_URL}/api/quiz/${id}`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // const result = await response.json();
-    // return result?.data;
-
     const response = await fetch(`${BASE_URL}/api/quiz/${id}`, {
-      method: 'get',
+      method: "GET",
       headers: {
-        "content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
-
     const result = await response.json();
-    console.log({result});
-    return result?.data;
 
-  
+    return result?.data;
   } catch (error) {
     console.error("Error Nih: ", {
       error,
@@ -40,14 +28,15 @@ export async function getQuestionById({ id = 10 }) {
 
 export async function getQuestions() {
   try {
-    // const response = await fetch(`${BASE_URL}/api/quiz`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // const result = await response.json();
-    // return result?.data;
+    const response = await fetch(`${BASE_URL}/api/quiz`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+    return result?.data;
   } catch (error) {
     console.error("Error Nih: ", {
       error,
